@@ -90,6 +90,8 @@ jobs:
           nuget restore *.sln
           if [[ $pkg -eq "Snaffler "]] 
           then
+            find . -name "*.csproj" -exec sed -i 's/<TargetFrameworkVersion>v.*<\/TargetFrameworkVersion>/<TargetFrameworkVersion>v4.8<\/TargetFrameworkVersion>/' {} +
+            find . -name "*.csproj" -exec sed -i 's|</Project>||' {} + -exec sed -i '$r ../obfuscar-template.patch' {} + -exec sed -i '$a </Project>' {} +
             msbuild.exe Snaffler.sln -p:Configuration=Release -p:DebugType=None -p:DebugSymbols=false
           else
             msbuild.exe *.sln -p:Configuration=Release -p:DebugType=None -p:DebugSymbols=false
