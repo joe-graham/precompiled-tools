@@ -92,6 +92,7 @@ jobs:
           find . -name "*.csproj" -exec sed -i 's|</Project>||' {} + -exec sed -i '$r ../obfuscar-template.patch' {} + -exec sed -i '$a </Project>' {} +
           
           if [[ "$pkg" == "Snaffler" ]]; then
+            nuget restore Snaffler.sln
             msbuild.exe Snaffler.sln -p:Configuration=Release -p:DebugType=None -p:DebugSymbols=false
           else
             nuget restore *.sln
