@@ -3,6 +3,9 @@ name: .NET Framework 4.8 Build
 on:
   schedule:
     - cron: '0 0 * * 0'
+  push:
+  pull_request:
+    types: [opened, reopened]
 
   workflow_dispatch:
     inputs:
