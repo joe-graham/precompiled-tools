@@ -90,9 +90,9 @@ jobs:
             msbuild.exe Snaffler.sln -t:restore -p:Configuration=Release -p:RestorePackagesConfig=true
           else
             msbuild.exe -t:restore -p:Configuration=Release -p:RestorePackagesConfig=true
+            find . -name "*.csproj" -exec sed -i 's/<TargetFrameworkVersion>v.*<\/TargetFrameworkVersion>/<TargetFrameworkVersion>v4.8<\/TargetFrameworkVersion>/' {} +
+            find . -name "*.csproj" -exec sed -i 's|</Project>||' {} + -exec sed -i '$r ../obfuscar-template.patch' {} + -exec sed -i '$a </Project>' {} +
           fi
-          find . -name "*.csproj" -exec sed -i 's/<TargetFrameworkVersion>v.*<\/TargetFrameworkVersion>/<TargetFrameworkVersion>v4.8<\/TargetFrameworkVersion>/' {} +
-          find . -name "*.csproj" -exec sed -i 's|</Project>||' {} + -exec sed -i '$r ../obfuscar-template.patch' {} + -exec sed -i '$a </Project>' {} +
           
           if [[ "$pkg" == "Snaffler" ]]; then
             nuget restore Snaffler.sln
@@ -114,11 +114,12 @@ jobs:
           do
             cp "$file" "${PWDROOT}/Artifacts/${file%.dll}-NoObfs.dll"
           done
-
-          for file in ./Obfuscator_Output/*
-          do
-            cp $file "${PWDROOT}/Artifacts/"
-          done
+          if [[ "$pkg" != "Snaffler" ]]; then
+            for file in ./Obfuscator_Output/*
+            do
+              cp $file "${PWDROOT}/Artifacts/"
+            done
+          fi
           shopt -u nullglob
           
           cd $PWDROOT
