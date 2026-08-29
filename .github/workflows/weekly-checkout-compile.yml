@@ -88,6 +88,14 @@ jobs:
           cd $pkg
           if [[ "$pkg" == "Snaffler" ]]; then
             msbuild.exe Snaffler.sln -t:restore -p:Configuration=Release -p:RestorePackagesConfig=true
+            sed -i 's/<TargetFrameworkVersion>v.*<\/TargetFrameworkVersion>/<TargetFrameworkVersion>v4.8<\/TargetFrameworkVersion>/' Snaffler\Snaffler.csproj
+            sed -i 's/<TargetFrameworkVersion>v.*<\/TargetFrameworkVersion>/<TargetFrameworkVersion>v4.8<\/TargetFrameworkVersion>/' SnaffCore\SnaffCore.csproj
+            sed -i 's|</Project>||' Snaffler\Snaffler.csproj 
+            sed -i 's|</Project>||' SnaffCore\SnaffCore.csproj 
+            sed -i '$r ../obfuscar-template.patch' Snaffler\Snaffler.csproj
+            sed -i '$r ../obfuscar-template.patch' SnaffCore\SnaffCore.csproj
+            sed -i '$a </Project>' Snaffler\Snaffler.csproj
+            sed -i '$a </Project>' SnaffCore\SnaffCore.csproj
           else
             msbuild.exe -t:restore -p:Configuration=Release -p:RestorePackagesConfig=true
             find . -name "*.csproj" -exec sed -i 's/<TargetFrameworkVersion>v.*<\/TargetFrameworkVersion>/<TargetFrameworkVersion>v4.8<\/TargetFrameworkVersion>/' {} +
