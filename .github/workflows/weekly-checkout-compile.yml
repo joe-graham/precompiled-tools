@@ -68,6 +68,16 @@ jobs:
         $Arguments = ('/c', "vs_installer.exe", 'modify', '--installPath', "`"$InstallPath`"", $WorkLoads, $WorkLoads, '--quiet', '--norestart', '--nocache')
         $process = Start-Process -FilePath cmd.exe -ArgumentList $Arguments -Wait -PassThru -WindowStyle Hidden
 
+    - name: Install DNF 4.5 packs
+      shell: pwsh
+      if: ${{ steps.update_sync.outputs.changed == 'true' || github.event.inputs.publish == 'true' }}
+      working-directory: "C:\\Program Files (x86)\\Microsoft Visual Studio\\Installer"
+      run: |
+        $InstallPath = "C:\Program Files\Microsoft Visual Studio\2022\Enterprise"
+        $WorkLoads = '--add Microsoft.Net.Component.4.5.SDK --add Microsoft.Net.Component.4.5.TargetingPack --add Microsoft.Net.ComponentGroup.4.5.DeveloperTools'
+        $Arguments = ('/c', "vs_installer.exe", 'modify', '--installPath', "`"$InstallPath`"", $WorkLoads, $WorkLoads, '--quiet', '--norestart', '--nocache')
+        $process = Start-Process -FilePath cmd.exe -ArgumentList $Arguments -Wait -PassThru -WindowStyle Hidden
+
     - name: Setup MSBuild
       uses: microsoft/setup-msbuild@v1.1
       if: ${{ steps.update_sync.outputs.changed == 'true' || github.event.inputs.publish == 'true' }}
@@ -88,10 +98,6 @@ jobs:
           cd $pkg
           if [[ "$pkg" == "Snaffler" ]]; then
             msbuild.exe Snaffler.sln -t:restore -p:Configuration=Release -p:RestorePackagesConfig=true
-            sed -i 's/<TargetFrameworkVersion>v.*<\/TargetFrameworkVersion>/<TargetFrameworkVersion>v4.8<\/TargetFrameworkVersion>/' Snaffler/Snaffler.csproj
-            sed -i 's/<TargetFrameworkVersion>v.*<\/TargetFrameworkVersion>/<TargetFrameworkVersion>v4.8<\/TargetFrameworkVersion>/' SnaffCore/SnaffCore.csproj
-            sed -i 's|</Project>||' Snaffler/Snaffler.csproj 
-            sed -i 's|</Project>||' SnaffCore/SnaffCore.csproj 
             sed -i '$r ../obfuscar-template.patch' Snaffler/Snaffler.csproj
             sed -i '$r ../obfuscar-template.patch' SnaffCore/SnaffCore.csproj
             sed -i '$a </Project>' Snaffler/Snaffler.csproj
@@ -103,7 +109,7 @@ jobs:
           fi
           
           if [[ "$pkg" == "Snaffler" ]]; then
-            cat -n Snaffler/Snaffler.csproj
+            //cat -n Snaffler/Snaffler.csproj
             nuget restore Snaffler.sln
             msbuild.exe Snaffler.sln -p:Configuration=Release -p:DebugType=None -p:DebugSymbols=false
           else
