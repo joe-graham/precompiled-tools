@@ -111,10 +111,8 @@ jobs:
           fi
           
           if [[ "$pkg" == "Snaffler" ]]; then
-            cat -n Snaffler/Snaffler.csproj
-            cat -n SnaffCore/SnaffCore.csproj
             nuget restore Snaffler.sln
-            msbuild.exe Snaffler.sln -p:Configuration=Release -p:DebugType=None -p:DebugSymbols=false
+            msbuild.exe Snaffler.sln -p:Configuration=Release -p:DebugType=None -p:DebugSymbols=false -verbosity:diag
           else
             nuget restore *.sln
             msbuild.exe *.sln -p:Configuration=Release -p:DebugType=None -p:DebugSymbols=false
