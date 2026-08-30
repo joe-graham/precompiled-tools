@@ -98,6 +98,8 @@ jobs:
           cd $pkg
           if [[ "$pkg" == "Snaffler" ]]; then
             msbuild.exe Snaffler.sln -t:restore -p:Configuration=Release -p:RestorePackagesConfig=true
+            sed -i 's|</Project>||' Snaffler/Snaffler.csproj
+            sed -i 's|</Project>||' SnaffCore/SnaffCore.csproj
             sed -i '$r ../obfuscar-template.patch' Snaffler/Snaffler.csproj
             sed -i '$r ../obfuscar-template.patch' SnaffCore/SnaffCore.csproj
             sed -i '$a </Project>' Snaffler/Snaffler.csproj
