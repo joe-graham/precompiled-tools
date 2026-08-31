@@ -111,7 +111,7 @@ jobs:
           fi
           
           if [[ "$pkg" == "Snaffler" ]]; then
-            nuget restore Snaffler.sln
+            nuget restore Snaffler.sln -Verbosity detailed
             msbuild.exe Snaffler.sln -p:Configuration=Release -p:DebugType=None -p:DebugSymbols=false -verbosity:diag
           else
             nuget restore *.sln
