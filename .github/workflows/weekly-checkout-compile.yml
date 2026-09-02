@@ -68,13 +68,13 @@ jobs:
         $Arguments = ('/c', "vs_installer.exe", 'modify', '--installPath', "`"$InstallPath`"", $WorkLoads, $WorkLoads, '--quiet', '--norestart', '--nocache')
         $process = Start-Process -FilePath cmd.exe -ArgumentList $Arguments -Wait -PassThru -WindowStyle Hidden
 
-    - name: Install DNF 4.5 packs
+    - name: Install DNF 4.5.1 packs
       shell: pwsh
       if: ${{ steps.update_sync.outputs.changed == 'true' || github.event.inputs.publish == 'true' }}
       working-directory: "C:\\Program Files (x86)\\Microsoft Visual Studio\\Installer"
       run: |
         $InstallPath = "C:\Program Files\Microsoft Visual Studio\2022\Enterprise"
-        $WorkLoads = '--add Microsoft.Net.Component.4.5.SDK --add Microsoft.Net.Component.4.5.TargetingPack --add Microsoft.Net.ComponentGroup.4.5.DeveloperTools'
+        $WorkLoads = '--add Microsoft.Net.Component.4.5.1.SDK --add Microsoft.Net.Component.4.5.TargetingPack --add Microsoft.Net.ComponentGroup.4.5.1.DeveloperTools'
         $Arguments = ('/c', "vs_installer.exe", 'modify', '--installPath', "`"$InstallPath`"", $WorkLoads, $WorkLoads, '--quiet', '--norestart', '--nocache')
         $process = Start-Process -FilePath cmd.exe -ArgumentList $Arguments -Wait -PassThru -WindowStyle Hidden
 
