@@ -95,6 +95,8 @@ jobs:
             #sed -i '$a </Project>' SnaffCore/SnaffCore.csproj
             sed -i 's/v4.5.1/4.8/' Snaffler/Snaffler.csproj
             sed -i 's/v4.5.1/4.8/' SnaffCore/SnaffCore.csproj
+            cat -n Snaffler/Snaffler.csproj
+            cat -n SnaffCore/SnaffCore.csproj
           else
             msbuild.exe -t:restore -p:Configuration=Release -p:RestorePackagesConfig=true
             find . -name "*.csproj" -exec sed -i 's/<TargetFrameworkVersion>v.*<\/TargetFrameworkVersion>/<TargetFrameworkVersion>v4.8<\/TargetFrameworkVersion>/' {} +
