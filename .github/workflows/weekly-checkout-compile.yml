@@ -86,7 +86,7 @@ jobs:
         for pkg in Certify ForgeCert Koh Lockless RestrictedAdmin Rubeus SafetyKatz Seatbelt SharpDPAPI SharpDump SharpUp SharpWMI Snaffler # Skipping KeeThief/DecryptionShellcode KeeThief/KeeTheft KeeThief/KeePass-2.34-Source-Patched
         do
           cd $pkg
-          msbuild.exe -t:restore -p:Configuration=Release -p:RestorePackagesConfig=true
+          msbuild.exe Snaffler.sln -t:restore -p:Configuration=Release -p:RestorePackagesConfig=true
           if [[ "$pkg" == "Snaffler" ]]; then
             #sed -i 's|</Project>||' Snaffler/Snaffler.csproj
             #sed -i 's|</Project>||' SnaffCore/SnaffCore.csproj
